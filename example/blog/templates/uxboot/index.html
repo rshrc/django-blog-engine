@@ -37,11 +37,8 @@
             <div class="ml-auto my-2 my-lg-0">
                 <div class="section" id="b-section-navbar-search-form" name="Navbar: search form">
                     <div class="widget BlogSearch" data-version="2" id="BlogSearch1">
-                        <form action="" class="form-inline">
-                            <input aria-label="Search this blog" class="form-control mr-sm-2" name="q"
-                                   placeholder="Search this blog" type="text">
-                            <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
-                        </form>
+                        <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+
                     </div>
                 </div>
             </div>
@@ -215,7 +212,7 @@
                         <h5>Tags</h5>
                         <ul class=" theblog_widget">
                             {% for tag in all_tags %}
-                            <li><a href="{% url "blog:post_list_by_tag" tag.slug %}">{{ tag }}</a></li>
+                                <li><a href="{% url "blog:post_list_by_tag" tag.slug %}">{{ tag }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -238,17 +235,17 @@
                     <div class="theblog_part">
                         <h5>Latest News</h5>
                         {% for post in posts %}
-                        <div class="theblog_blog_area">
-                            <div class="theblog_thumb">
-                                <img class="img-fluid"
-                                     src="https://3.bp.blogspot.com/--C1wpaf_S4M/W7V__10nRoI/AAAAAAAAK24/1NSfapuYSIY0f0wzXY9NgoH0FjQLT07YACKgBGAs/s1600/maxresdefault.jpg"
-                                     alt="">
+                            <div class="theblog_blog_area">
+                                <div class="theblog_thumb">
+                                    <img class="img-fluid"
+                                         src="https://3.bp.blogspot.com/--C1wpaf_S4M/W7V__10nRoI/AAAAAAAAK24/1NSfapuYSIY0f0wzXY9NgoH0FjQLT07YACKgBGAs/s1600/maxresdefault.jpg"
+                                         alt="">
 
+                                </div>
+                                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                                <p class="kilimanjaro_date">{{ post.publish }}</p>
+                                <p>{{ post.body|markdown|truncatewords_html:10 }}</p>
                             </div>
-                            <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-                            <p class="kilimanjaro_date">{{ post.publish }}</p>
-                            <p>{{ post.body|markdown|truncatewords_html:10 }}</p>
-                        </div>
                         {% endfor %}
                     </div>
                 </div>

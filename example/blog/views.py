@@ -153,8 +153,8 @@ def signup(request):
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=raw_password)
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect('home')
+            #login(request, user)
+            return redirect(to="/blog/")
     else:
         form = UserCreationForm()
     return render(request, 'blog/registration/signup.html', {'form': form})
