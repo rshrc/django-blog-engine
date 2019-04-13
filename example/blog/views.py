@@ -146,6 +146,16 @@ def post_search(request):
 
 
 def signup(request):
-    pass
-
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'blog/registration/signup.html', {'form': form})
 
