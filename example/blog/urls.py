@@ -18,4 +18,5 @@ urlpatterns = [
     path('feed/', LatestPostsFeed(), name='post_feed'),
     path('search/', views.post_search, name='post_search'),
     path('signup/', views.signup, name="signup"),
+    path('login/', views.login, name="login")
 ]

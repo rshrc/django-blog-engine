@@ -1,3 +1,5 @@
+from django.contrib.auth import authenticate
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.postgres.search import TrigramSimilarity
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -6,11 +8,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView
 from taggit.models import Tag
 
-from .forms import EmailPostForm, CommentForm, SearchForm
+from .forms import EmailPostForm, CommentForm, SearchForm, SignUpForm
 from .models import Post
-
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
 
 
 def post_list(request, tag_slug=None):
@@ -92,7 +91,7 @@ def post_detail(request, year, month, day, post):
                    'comment_form': comment_form,
                    'similar_posts': similar_posts,
                    'all_tags': all_tags,
-                   'posts': Post.objects.all()[:],})
+                   'posts': Post.objects.all()[:], })
 
 
 class PostListView(ListView):
@@ -147,15 +146,29 @@ def post_search(request):
 
 def signup(request):
     if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            # login(request, user)
+            return redirect(to="/blog/")
+    else:
+        form = SignUpForm()
+    return render(request, 'blog/registration/signup.html', {'form': form})
+
+
+def login(request):
+    if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=raw_password)
-            #login(request, user)
+            # login(request, user)
             return redirect(to="/blog/")
     else:
         form = UserCreationForm()
-    return render(request, 'blog/registration/signup.html', {'form': form})
-
+    return render(request, 'blog/registration/login.html', {'form': form})
