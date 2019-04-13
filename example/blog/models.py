@@ -1,44 +1,46 @@
+from django.contrib.auth.models import User
 from django.db import models
-from django.utils import timezone 
-from django.contrib.auth.models import User 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse
+from django.utils import timezone
 from taggit.managers import TaggableManager
 
 
-class PublishedManager(models.Manager): 
-    def get_queryset(self): 
+class PublishedManager(models.Manager):
+    def get_queryset(self):
         return super(PublishedManager, self).get_queryset().filter(status='published')
 
 
-class Post(models.Model): 
-    STATUS_CHOICES = ( 
-        ('draft', 'Draft'), 
-        ('published', 'Published'), 
-    ) 
-    title = models.CharField(max_length=250) 
-    slug = models.SlugField(max_length=250,  
-                            unique_for_date='publish') 
-    author = models.ForeignKey(User, 
+class Post(models.Model):
+    STATUS_CHOICES = (
+        ('draft', 'Draft'),
+        ('published', 'Published'),
+    )
+    title = models.CharField(max_length=250)
+    slug = models.SlugField(max_length=250,
+                            unique_for_date='publish')
+    author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
-                               related_name='blog_posts') 
-    body = models.TextField() 
-    publish = models.DateTimeField(default=timezone.now) 
-    created = models.DateTimeField(auto_now_add=True) 
-    updated = models.DateTimeField(auto_now=True) 
-    status = models.CharField(max_length=10,  
-                              choices=STATUS_CHOICES, 
+                               related_name='blog_posts')
+    body = models.TextField()
+    publish = models.DateTimeField(default=timezone.now)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=10,
+                              choices=STATUS_CHOICES,
                               default='draft')
 
     # image = models.ImageField()
-    
-    objects = models.Manager() # The default manager. 
-    published = PublishedManager() # Our custom manager.
+
+    objects = models.Manager()  # The default manager.
+    published = PublishedManager()  # Our custom manager.
     tags = TaggableManager()
 
-    class Meta: 
-        ordering = ('-publish',) 
+    class Meta:
+        ordering = ('-publish',)
 
-    def __str__(self): 
+    def __str__(self):
         return self.title
 
     def get_absolute_url(self):
@@ -49,19 +51,33 @@ class Post(models.Model):
                              self.slug])
 
 
-class Comment(models.Model): 
+class Comment(models.Model):
     post = models.ForeignKey(Post,
                              on_delete=models.CASCADE,
                              related_name='comments')
-    name = models.CharField(max_length=80) 
-    email = models.EmailField() 
-    body = models.TextField() 
-    created = models.DateTimeField(auto_now_add=True) 
-    updated = models.DateTimeField(auto_now=True) 
-    active = models.BooleanField(default=True) 
- 
-    class Meta: 
-        ordering = ('created',) 
- 
-    def __str__(self): 
+    name = models.CharField(max_length=80)
+    email = models.EmailField()
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ('created',)
+
+    def __str__(self):
         return 'Comment by {} on {}'.format(self.name, self.post)
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(max_length=500, blank=True)
+    location = models.CharField(max_length=30, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+
+
+@receiver(post_save, sender=User)
+def update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+    instance.profile.save()

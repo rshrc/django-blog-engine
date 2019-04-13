@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.postgres.search import TrigramSimilarity
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView
 from taggit.models import Tag
 
-from .forms import EmailPostForm, CommentForm, SearchForm, SignUpForm
+from .forms import EmailPostForm, CommentForm, SearchForm, SignUpForm, LoginForm
 from .models import Post
 
 
@@ -148,7 +148,11 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
+
+            user = form.save()
+            user.refresh_from_db()  # load the profile instance created by the signal
+            user.profile.birth_date = form.cleaned_data.get('birth_date')
+            user.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
@@ -161,7 +165,7 @@ def signup(request):
 
 def login(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = AuthenticationForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -170,5 +174,5 @@ def login(request):
             # login(request, user)
             return redirect(to="/blog/")
     else:
-        form = UserCreationForm()
+        form = AuthenticationForm()
     return render(request, 'blog/registration/login.html', {'form': form})
