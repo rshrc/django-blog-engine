@@ -2,12 +2,15 @@ from django.contrib.postgres.search import TrigramSimilarity
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView
 from taggit.models import Tag
 
 from .forms import EmailPostForm, CommentForm, SearchForm
 from .models import Post
+
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
 
 
 def post_list(request, tag_slug=None):
@@ -140,3 +143,9 @@ def post_search(request):
                   {'form': form,
                    'query': query,
                    'results': results})
+
+
+def signup(request):
+    pass
+
+
