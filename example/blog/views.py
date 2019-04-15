@@ -39,7 +39,7 @@ def post_list(request, tag_slug=None):
     #                'posts': posts,
     #                'tag': tag})
 
-    return render(request, 'uxboot/index.html', {'page': page, 'posts': posts, 'tag': tag, 'all_tags': all_tags})
+    return render(request, 'blog/post/homepage.html', {'page': page, 'posts': posts, 'tag': tag, 'all_tags': all_tags})
 
 
 def post_detail(request, year, month, day, post):
@@ -84,7 +84,7 @@ def post_detail(request, year, month, day, post):
     #                'comment_form': comment_form,
     #                'similar_posts': similar_posts})
     return render(request,
-                  'uxboot/detail.html',
+                  'blog/post/detail.html',
                   {'post': post,
                    'comments': comments,
                    'new_comment': new_comment,
