@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'blog.apps.BlogConfig',
     'taggit',
+    'django_extensions',
 
 ]
 
