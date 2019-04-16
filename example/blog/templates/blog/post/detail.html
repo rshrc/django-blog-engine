@@ -4,150 +4,152 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block page_content %}
-  <div class="container">
-    <div class="row">
-        <!-- Blog Entries Column -->
-        <div class="col-lg-8">
-            <!-- Title -->
-            <h1 class="mt-4">{{ post.title }}</h1>
-            <!-- Author -->
-            <p class="lead">
-                by
-                <a href="#">{{ post.author }}</a>
-            </p>
-            <hr>
-            <!-- Date/Time -->
-            <p>{{ post.publish }}</p>
-            <hr>
-            <!-- Preview Image -->
-            <img class="card-img-top"
-                 src="https://2.bp.blogspot.com/-vvG5hMTFOro/W6RaoxdAikI/AAAAAAAAK1k/jezYdP7fvfYvt15Jv8a0agrGQE2lMU8YgCKgBGAs/s1600/MASAI-2.jpg"
-                 alt="Card image cap">
-            <hr>
-            <!-- Post Content -->
-            {{ post.body }}
-            <hr>
-            <!-- Comments Form -->
-            <div class="card my-4">
-                {% if new_comment %}
-                    <h5 class="card-header">Your comment has been added</h5>
-                {% else %}
-                    <h5 class="card-header">Leave a Comment:</h5>
-                    <div class="card-body">
-                        <form action="." method="post">
-                            {% csrf_token %}
-                            {{ comment_form.as_p }}
-                            {#                            <div class="form-group">#}
-                            {#                                <textarea class="form-control" rows="3"></textarea>#}
-                            {#                            </div>#}
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
-                    </div>
-                {% endif %}
-
-            </div>
-            {% with comments.count as total_comments %}
-                <h2>
-                    {{ total_comments }} comment{{ total_comments|pluralize }}
-                </h2>
-            {% endwith %}
-
-            {% for comment in comments %}
-                <div class="media mb-4">
-                    <div class="media-body">
-                        <h5 class="mt-0">comment.name</h5>
-                        <p>comment.created</p>
-                        {{ comment.body|linebreaks }}
-                    </div>
-                </div>
+    <div class="container">
+        <div class="row">
+            <!-- Blog Entries Column -->
+            <div class="col-lg-8">
+                <!-- Title -->
+                <h1 class="mt-4">{{ post.title }}</h1>
+                <!-- Author -->
+                <p class="lead">
+                    by
+                    <a href="#">{{ post.author }}</a>
+                </p>
                 <hr>
-            {% endfor %}
-        </div>
+                <!-- Date/Time -->
+                <p>{{ post.publish }}</p>
+                <hr>
+                <!-- Preview Image -->
+                <img class="card-img-top"
+                     src="https://3.bp.blogspot.com/--C1wpaf_S4M/W7V__10nRoI/AAAAAAAAK24/1NSfapuYSIY0f0wzXY9NgoH0FjQLT07YACKgBGAs/s1600/maxresdefault.jpg"
 
-        <!-- Sidebar Widgets Column -->
-        <div class="col-md-4">
-            <!-- Search Widget -->
-            <div class="card my-4">
-                <h5 class="card-header">Search</h5>
-                <div class="card-body">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
+                     alt="Card image cap">
+                <hr>
+                <!-- Post Content -->
+                {{ post.body }}
+                <hr>
+                <!-- Comments Form -->
+                <div class="card my-4">
+                    {% if new_comment %}
+                        <h5 class="card-header">Your comment has been added</h5>
+                    {% else %}
+                        <h5 class="card-header">Leave a Comment:</h5>
+                        <div class="card-body">
+                            <form action="." method="post">
+                                {% csrf_token %}
+                                {{ comment_form.as_p }}
+                                {#                            <div class="form-group">#}
+                                {#                                <textarea class="form-control" rows="3"></textarea>#}
+                                {#                            </div>#}
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    {% endif %}
+
+                </div>
+                {% with comments.count as total_comments %}
+                    <h2>
+                        {{ total_comments }} comment{{ total_comments|pluralize }}
+                    </h2>
+                {% endwith %}
+
+                {% for comment in comments %}
+                    <div class="media mb-4">
+                        <div class="media-body">
+                            <h5 class="mt-0">comment.name</h5>
+                            <p>comment.created</p>
+                            {{ comment.body|linebreaks }}
+                        </div>
+                    </div>
+                    <hr>
+                {% endfor %}
+            </div>
+
+            <!-- Sidebar Widgets Column -->
+            <div class="col-md-4">
+                <!-- Search Widget -->
+                <div class="card my-4">
+                    <h5 class="card-header">Search</h5>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for...">
+                            <span class="input-group-btn">
                   <button class="btn btn-secondary" type="button">Go!</button>
                 </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categories Widget -->
+                <div class="card my-3">
+                    <h5 class="card-header">Categories</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <a href="#">Simba</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Nyati</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Faru</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <a href="#">Kiboko</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Fisi</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Pundamlia</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Side Widget -->
+                <div class="card my-4">
+                    <h5 class="card-header">maelezo</h5>
+                    <div class="card-body">
+                        You can put anything you want inside of these side widgets. They are easy to use, and feature
+                        the
+                        new Bootstrap 4 card containers!
+                    </div>
+                </div>
+                <!-- Side Widget -->
+                <div class="card my-4">
+                    <h5 class="card-header">banner</h5>
+                    <div class="card-body">
+                        <img class="card-img-top"
+                             src="https://2.bp.blogspot.com/-vvG5hMTFOro/W6RaoxdAikI/AAAAAAAAK1k/jezYdP7fvfYvt15Jv8a0agrGQE2lMU8YgCKgBGAs/s1600/MASAI-2.jpg"
+                             alt="Card image cap">
+                    </div>
+                </div>
+                <!-- tweeter -->
+                <div class="card my-4">
+                    <h5 class="card-header">Tweeter here</h5>
+                    <div class="card-body">
+
+                        <a class="twitter-timeline" href="https://twitter.com/Luckmoshy?ref_src=twsrc%5Etfw">Tweets by
+                            Luckmoshy</a>
+                        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                        <a href="https://twitter.com/Luckmoshy?ref_src=twsrc%5Etfw" class="twitter-follow-button"
+                           data-show-count="false">Follow @Luckmoshy</a>
+                        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                     </div>
                 </div>
             </div>
 
-            <!-- Categories Widget -->
-            <div class="card my-3">
-                <h5 class="card-header">Categories</h5>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled mb-0">
-                                <li>
-                                    <a href="#">Simba</a>
-                                </li>
-                                <li>
-                                    <a href="#">Nyati</a>
-                                </li>
-                                <li>
-                                    <a href="#">Faru</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled mb-0">
-                                <li>
-                                    <a href="#">Kiboko</a>
-                                </li>
-                                <li>
-                                    <a href="#">Fisi</a>
-                                </li>
-                                <li>
-                                    <a href="#">Pundamlia</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Side Widget -->
-            <div class="card my-4">
-                <h5 class="card-header">maelezo</h5>
-                <div class="card-body">
-                    You can put anything you want inside of these side widgets. They are easy to use, and feature the
-                    new Bootstrap 4 card containers!
-                </div>
-            </div>
-            <!-- Side Widget -->
-            <div class="card my-4">
-                <h5 class="card-header">banner</h5>
-                <div class="card-body">
-                    <img class="card-img-top"
-                         src="https://2.bp.blogspot.com/-vvG5hMTFOro/W6RaoxdAikI/AAAAAAAAK1k/jezYdP7fvfYvt15Jv8a0agrGQE2lMU8YgCKgBGAs/s1600/MASAI-2.jpg"
-                         alt="Card image cap">
-                </div>
-            </div>
-            <!-- tweeter -->
-            <div class="card my-4">
-                <h5 class="card-header">Tweeter here</h5>
-                <div class="card-body">
-
-                    <a class="twitter-timeline" href="https://twitter.com/Luckmoshy?ref_src=twsrc%5Etfw">Tweets by
-                        Luckmoshy</a>
-                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                    <a href="https://twitter.com/Luckmoshy?ref_src=twsrc%5Etfw" class="twitter-follow-button"
-                       data-show-count="false">Follow @Luckmoshy</a>
-                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                </div>
-            </div>
         </div>
+        <!-- /.row -->
 
     </div>
-    <!-- /.row -->
-
-</div>
 {% endblock %}

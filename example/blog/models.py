@@ -32,7 +32,8 @@ class Post(models.Model):
                               default='draft')
 
     # image = models.ImageField()
-
+    post_image = models.ImageField(
+        upload_to='media/')
     objects = models.Manager()  # The default manager.
     published = PublishedManager()  # Our custom manager.
     tags = TaggableManager()
