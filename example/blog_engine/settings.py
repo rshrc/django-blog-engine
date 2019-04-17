@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'blog.apps.BlogConfig',
     'taggit',
+    'django_extensions',
 
 ]
 
@@ -68,14 +69,12 @@ WSGI_APPLICATION = 'blog_engine.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
+# Using SQLite3 as database backend
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'blog',
-        'USER': 'blog',
-        'PASSWORD': 'magic123',
-        'HOST': 'localhost',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -126,3 +125,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 LOGIN_REDIRECT_URL = '/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -75,7 +75,7 @@ def post_detail(request, year, month, day, post):
     similar_posts = Post.published.filter(tags__in=post_tags_ids) \
         .exclude(id=post.id)
     similar_posts = similar_posts.annotate(same_tags=Count('tags')) \
-                        .order_by('-same_tags', '-publish')[:4]
+        .order_by('-same_tags', '-publish')[:4]
 
     # return render(request,
     #               'blog/post/detail.html',
@@ -84,6 +84,9 @@ def post_detail(request, year, month, day, post):
     #                'new_comment': new_comment,
     #                'comment_form': comment_form,
     #                'similar_posts': similar_posts})
+
+    post_image = post.post_image
+
     return render(request,
                   'blog/post/detail.html',
                   {'post': post,
@@ -92,7 +95,8 @@ def post_detail(request, year, month, day, post):
                    'comment_form': comment_form,
                    'similar_posts': similar_posts,
                    'all_tags': all_tags,
-                   'posts': Post.objects.all()[:], })
+                   'posts': Post.objects.all()[:],
+                   'post_image': post_image})
 
 
 class PostListView(ListView):
@@ -115,8 +119,10 @@ def post_share(request, post_id):
             cd = form.cleaned_data
             post_url = request.build_absolute_uri(
                 post.get_absolute_url())
-            subject = '{} ({}) recommends you reading "{}"'.format(cd['name'], cd['email'], post.title)
-            message = 'Read "{}" at {}\n\n{}\'s comments: {}'.format(post.title, post_url, cd['name'], cd['comments'])
+            subject = '{} ({}) recommends you reading "{}"'.format(
+                cd['name'], cd['email'], post.title)
+            message = 'Read "{}" at {}\n\n{}\'s comments: {}'.format(
+                post.title, post_url, cd['name'], cd['comments'])
             send_mail(subject, message, 'admin@myblog.com',
                       [cd['to']])
             sent = True
